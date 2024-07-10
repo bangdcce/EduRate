@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
  *
  * @author thong
  */
-@WebServlet("/signout")
+@WebServlet("/SignOut")
 public class SignOutServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -37,6 +37,6 @@ public class SignOutServlet extends HttpServlet {
             }
 
             // Redirect the user to the login page
-            response.sendRedirect("main.jsp");
+            response.sendRedirect("index.jsp");
     }
 }
