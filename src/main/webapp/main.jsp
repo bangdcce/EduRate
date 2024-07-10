@@ -545,7 +545,7 @@
                     </li>
 
                     <li>
-                        <a href="signout.jsp">
+                        <a href="/signout">
                             <span class="icon">
                                 <ion-icon name="log-out-outline"></ion-icon>
                             </span>
