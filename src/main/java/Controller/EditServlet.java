@@ -74,13 +74,7 @@ public class EditServlet extends HttpServlet {
             String id = getId[getId.length - 1];
             request.setAttribute("SchoolID", id);
             request.getRequestDispatcher("/Edit.jsp").forward(request, response);
-        } else if (path.equals("/EditServlet/Edit/Fail")) {
-            request.setAttribute("Fail", "Edit Failed");
-            request.getRequestDispatcher("/Edit.jsp").forward(request, response);
-        }else if(path.equals("/EditServlet/Edit/Success")){
-            request.setAttribute("Success", "Edit was successful");
-            request.getRequestDispatcher("/Edit.jsp").forward(request, response);
-        }
+        } 
 
     }
 
@@ -95,19 +89,22 @@ public class EditServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("btn btn-primary") != null) {
+        if (request.getParameter("btnCancel") != null) {
+            response.sendRedirect("/EduRate/Home");
+            // Exit the method after redirection
+        } else if (request.getParameter("btnUp") != null) {
+
             String SchoolID = request.getParameter("SchoolID");
             String SchoolName = request.getParameter("SchoolName");
             String EstablishedDate = request.getParameter("EstablishedDate");
             int TotalStudents = Integer.parseInt(request.getParameter("TotalStudents"));
             String Website = request.getParameter("Website");
-            int SchoolTypeID = Integer.parseInt(request.getParameter("TypeID"));
 
-            int ProvinceID = Integer.parseInt(request.getParameter("ProvinceID"));
+            int ProvinceID = Integer.parseInt(request.getParameter("province"));
 
-            int DistrictId = Integer.parseInt(request.getParameter("DistrictID"));
+            int DistrictId = Integer.parseInt(request.getParameter("DistrictId"));
 
-            int WardId = Integer.parseInt(request.getParameter("WardID"));
+            int WardId = Integer.parseInt(request.getParameter("WardId"));
 
             String Description = request.getParameter("Description");
             int count = 0;
@@ -142,17 +139,12 @@ public class EditServlet extends HttpServlet {
 
             // Đường dẫn tương đối để lưu vào cơ sở dữ liệu
             // Retrieve other form parameters
-            School school = new School(SchoolID, SchoolName, Date.valueOf(EstablishedDate), TotalStudents, Website, ProvinceID, DistrictId, WardId, SchoolTypeID, relativePath, Description, 0, 0, 0);
+            School school = new School(SchoolID, SchoolName, Date.valueOf(EstablishedDate), TotalStudents, Website, ProvinceID, DistrictId, WardId,0, relativePath, Description, 0, 0, 0);
             SchoolDAO shDao = new SchoolDAO();
             count = shDao.updateSchoolByID(SchoolID, school);
-            if (count == 0) {
-                response.sendRedirect("/EditServlet/Edit/Fail");
-            } else {
-                response.sendRedirect("/EditServlet/Edit/Success");
+            if (count > 0) {
+                response.sendRedirect("/EditServlet/Edit/"+SchoolID);
             }
-
-        }else if(request.getParameter("btn btn-secondary")!=null){
-             response.sendRedirect("/MainPage/Main");
         }
     }
 

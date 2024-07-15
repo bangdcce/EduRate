@@ -40,6 +40,18 @@
         <servlet-name>CreateServlet</servlet-name>
         <servlet-class>Controller.CreateServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ForgotPassServlet</servlet-name>
+        <servlet-class>Controller.ForgotPassServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerifyServlet</servlet-name>
+        <servlet-class>Controller.VerifyServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangePassword</servlet-name>
+        <servlet-class>Controller.ChangePassword</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet/*</url-pattern>
@@ -79,6 +91,18 @@
     <servlet-mapping>
         <servlet-name>CreateServlet</servlet-name>
         <url-pattern>/CreateServlet/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ForgotPassServlet</servlet-name>
+        <url-pattern>/ForgotPassServlet/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyServlet</servlet-name>
+        <url-pattern>/VerifyServlet/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePassword</servlet-name>
+        <url-pattern>/ChangePassword/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

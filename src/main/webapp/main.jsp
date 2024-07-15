@@ -164,7 +164,6 @@
                 min-height: 100vh;
                 background: var(--white);
                 transition: 0.5s;
-                padding: 0 10px;
             }
             .main.active {
                 width: calc(100% - 80px);
@@ -331,6 +330,7 @@
                 align-items: center;
                 font-size: 16px;
                 margin-top: 10px;
+                margin-bottom: 20px;
             }
 
             .rating-details .rating-score span {
@@ -402,12 +402,8 @@
             }
             .rating-container {
                 width: 80%;
-                margin: 50px auto;
+                margin-left: 200px;
                 background-color: #ffffff;
-                border: 1px solid #ddd;
-                padding: 20px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                border-radius: 5px;
                 text-align: center;
             }
             .fa-star {
@@ -454,6 +450,62 @@
                 display: none;
                 z-index: 9999;
             }
+            .addNewbtn{
+                background-color: #28a745;
+                color: white;
+                cursor: pointer;
+                padding: 15px 30px;
+                font-size: 16px;
+                border: none;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+            .addNewbtn:hover{
+                background-color: #4cb648; 
+            }
+            .editBtn{
+                background-color: #007bff;
+                color: white;
+                cursor: pointer;
+                padding: 15px 30px;
+                font-size: 16px;
+                border: none;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+            .editBtn:hover{
+                background-color: #3498db;
+            }
+            .deleteBtn{
+                background-color: #dc3545;
+                color: white;
+                cursor: pointer;
+                padding: 15px 30px;
+                font-size: 16px;
+                border: none;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+            .submitBtn{
+                background-color: #0069D9;
+                color: white;
+                cursor: pointer;
+                padding: 15px 30px;
+                font-size: 16px;
+                border: none;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+            .submitBtn:hover{
+                background-color: #2a2185;
+            }
+            footer {
+                background-color: #2a2185;
+                border-top: 1px solid #e7e7e7;
+                padding: 20px;
+                text-align: center;
+                color:#e7e7e7;
+            }
         </style>
     </head>
 
@@ -464,7 +516,7 @@
                            user="sa"
                            password="sa123" />
         <sql:query dataSource="${conn}" var="rsSchool">
-            Select SchoolID, SchoolName, EstablishedDate, ReviewScore, 
+            Select SchoolID, SchoolName, EstablishedDate, ReviewScore,Website,
             (p.ProvinceName + ', ' + d.DistrictName + ', ' + w.WardName) as [Address],
             st.[Type], Picture,Description
             from School s
@@ -475,7 +527,7 @@
             where s.SchoolTypeID = 2
         </sql:query>
         <sql:query dataSource="${conn}" var="rsCollege">
-            Select SchoolID, SchoolName, EstablishedDate, ReviewScore, 
+            Select SchoolID, SchoolName, EstablishedDate, ReviewScore,Website, 
             (p.ProvinceName + ', ' + d.DistrictName + ', ' + w.WardName) as [Address],
             st.[Type], Picture,Description
             from School s
@@ -501,7 +553,7 @@
                 }
             }
 
-            String link = user.isEmpty() ? "/RegisterServlet/Register" : "/UserInfo/User/" + user;
+            String link = user.isEmpty() ? "/RegisterServlet/Register" : "/EduRate/Profile/" + user;
         %>
         <!-- =============== Navigation ================ -->
         <div class="container">
@@ -517,7 +569,7 @@
                     </li>
 
                     <li>
-                        <a href="/MainPage/Main">
+                        <a href="/EduRate/Home">
                             <span class="icon">
                                 <ion-icon name="home-outline"></ion-icon>
                             </span>
@@ -526,7 +578,7 @@
                     </li>
 
                     <li>
-                        <a href="<%= link%>" >
+                        <a href="/EduRate/Profile/<%=user%>">
                             <span class="icon">
                                 <ion-icon name="person-outline"></ion-icon>
                             </span>
@@ -535,7 +587,7 @@
                     </li>
 
                     <li>
-                        <a href="statistic.jsp">
+                        <a href="/EduRate/Statistic">
                             <span class="icon">
                                 <ion-icon name="stats-chart-outline"></ion-icon>
                             </span>
@@ -544,16 +596,7 @@
                     </li>
 
                     <li>
-                        <a href="/LoginServlet/Login">
-                            <span class="icon">
-                                <ion-icon name="log-in-outline"></ion-icon>
-                            </span>
-                            <span class="title">Log In</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/SignOut">
+                        <a href="/EduRate/SignOut">
                             <span class="icon">
                                 <ion-icon name="log-out-outline"></ion-icon>
                             </span>
@@ -576,10 +619,6 @@
                             <ion-icon name="search-outline"></ion-icon>
                         </label>
                     </div>
-                    <!-- UserImg -->
-                    <div class="user">
-                        <ion-icon name="person-circle-outline"></ion-icon>
-                    </div>
                 </div>
 
                 <!-- ================ Content ================ -->
@@ -601,19 +640,30 @@
                     <div id="college" class="rating-cards">
                         <c:forEach var="college" items="${rsCollege.rows}">
                             <div class="rating-card" data-name="${college.SchoolName}">
-                                <img src="<%= request.getContextPath()%>/${college.Picture}" alt="${college.SchoolName}" width="200" />
+                                <a href="${college.Website}" target="_blank">
+                                    <img src="<%= request.getContextPath()%>/${college.Picture}" alt="${college.SchoolName}" height="200" width="200" />
+                                </a>
                                 <div class="rating-details">
                                     <h2>${college.SchoolName}</h2>
-                                    <p>${college.Description}</p>
-                                    <div class="rating-score">Rating: <span>${college.ReviewScore}</span></div>
-                                    <div class="rating-container">
+                                    <div class="rating-score">Rating: <span>${college.ReviewScore}</span>
+                                        <div class="rating-container">
                                         <i class="far fa-star" id="star1-${college.SchoolID}"></i>
                                         <i class="far fa-star" id="star2-${college.SchoolID}"></i>
                                         <i class="far fa-star" id="star3-${college.SchoolID}"></i>
                                         <i class="far fa-star" id="star4-${college.SchoolID}"></i>
                                         <i class="far fa-star" id="star5-${college.SchoolID}"></i>
-                                        <button class="submitBtn" data-schoolid="${college.SchoolID}">Submit Rating</button>
+                                        <%
+                                            if (userRole.equals("User")) {
+                                        %>    
+                                        <button class="submitBtn" data-schoolid="${college.SchoolID}">GRADE</button>
+                                        <%
+                                            }
+                                        %>
                                     </div>
+                                    </div>
+                                    
+                                    <p>${college.Description}</p>
+                                    <b>Address:${college.Address}</b>
                                     <div class="toast" id="toast-${college.SchoolID}">Grade Successfully</div>
                                     <div class="error" id="error-${college.SchoolID}">Grade Failed</div>
                                 </div>
@@ -621,10 +671,10 @@
                                     if (userRole.equals("Admin")) {
                                 %>    
                                 <div>
-                                    <button onclick="location.href = '/EditServlet/Edit/${college.SchoolID}'" class="btn btn-primary btn-sm">Edit</button>
+                                    <button onclick="location.href = '/EditServlet/Edit/${college.SchoolID}'" class="editBtn">Edit</button>
                                 </div>
                                 <div>
-                                    <button onclick="confirmDelete('${college.SchoolID}')" class="btn btn-danger btn-sm">Delete</button>
+                                    <button onclick="confirmDelete('${college.SchoolID}')" class="deleteBtn">Delete</button>
                                 </div>
                                 <%
                                     }
@@ -636,19 +686,29 @@
                     <div id="university" class="rating-cards active">
                         <c:forEach var="school" items="${rsSchool.rows}">
                             <div class="rating-card" data-name="${school.SchoolName}">
-                                <img src="<%=request.getContextPath()%>/${college.Picture}" alt="${school.SchoolName}" width="200" />
-                                <div class="rating-details">
+                                <a href="${school.Website}" target="_blank">
+                                    <img src="<%= request.getContextPath()%>/${school.Picture}" alt="${school.SchoolName}" height="200" width="200" />
+                                </a>                                <div class="rating-details">
                                     <h2>${school.SchoolName}</h2>
-                                    <p>${school.Description}</p>
-                                    <div class="rating-score">Rating: <span>${school.ReviewScore}</span></div>
-                                    <div class="rating-container">
+                                    <div class="rating-score">Rating: <span>${school.ReviewScore}</span>
+                                        <div class="rating-container">
                                         <i class="far fa-star" id="star1-${school.SchoolID}"></i>
                                         <i class="far fa-star" id="star2-${school.SchoolID}"></i>
                                         <i class="far fa-star" id="star3-${school.SchoolID}"></i>
                                         <i class="far fa-star" id="star4-${school.SchoolID}"></i>
                                         <i class="far fa-star" id="star5-${school.SchoolID}"></i>
-                                        <button class="submitBtn" data-schoolid="${school.SchoolID}">Submit Rating</button>
+                                        <%
+                                            if (userRole.equals("User")) {
+                                        %>    
+                                        <button class="submitBtn" data-schoolid="${school.SchoolID}">GRADE</button>
+                                        <%
+                                            }
+                                        %>
                                     </div>
+                                    </div>
+                                    
+                                    <p>${school.Description}</p>
+                                    <b>Address:${school.Address}</b>
                                     <div class="toast" id="toast-${school.SchoolID}">Grade Successfully</div>
                                     <div class="error" id="error-${school.SchoolID}">Grade Failed</div>
                                 </div>
@@ -656,10 +716,10 @@
                                     if (userRole.equals("Admin")) {
                                 %>    
                                 <div>
-                                    <button onclick="location.href = '/EditServlet/Edit/${school.SchoolID}'" class="btn btn-primary btn-sm">Edit</button>
+                                    <button onclick="location.href = '/EditServlet/Edit/${school.SchoolID}'" class="editBtn">Edit</button>
                                 </div>
                                 <div>
-                                    <button onclick="confirmDelete('${school.SchoolID}')" class="btn btn-danger btn-sm">Delete</button>
+                                    <button onclick="confirmDelete('${school.SchoolID}')" class="deleteBtn">Delete</button>
                                 </div>
                                 <%
                                     }
@@ -670,11 +730,14 @@
                     <%
                         if (userRole.equals("Admin")) {
                     %>    
-                    <button onclick="location.href = '/CreateServlet/AddNew'">Add new School</button>
+                    <button onclick="location.href = '/CreateServlet/AddNew'" class="addNewbtn">Add new School</button>
                     <%
                         }
                     %>
                 </div>
+                <footer>
+                    <div>© 2024 EduRate</div>
+                </footer>
             </div>
         </div>
         <script>

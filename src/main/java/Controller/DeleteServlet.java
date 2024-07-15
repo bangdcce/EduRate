@@ -67,10 +67,10 @@ public class DeleteServlet extends HttpServlet {
             if (count == 0) {
                 // Gửi thông báo lỗi và chuyển hướng về trang chủ
                 request.setAttribute("message", "Delete operation failed.");
-                request.getRequestDispatcher("/MainPage/Main").forward(request, response);
+                request.getRequestDispatcher("/EduRate/Home").forward(request, response);
             } else {
                 // Chuyển hướng về trang chủ
-                response.sendRedirect("/MainPage/Main");
+                response.sendRedirect("/EduRate/Home");
             }
         }
     }

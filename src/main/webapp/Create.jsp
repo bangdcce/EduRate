@@ -13,6 +13,82 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+            .container {
+                width: 80%;
+                max-width: 800px;
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+                color: #333;
+            }
+            .form-row {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            .form-group {
+                width: 48%;
+                margin-bottom: 15px;
+            }
+            .form-group.full-width {
+                width: 100%;
+            }
+            label {
+                display: block;
+                margin-bottom: 5px;
+                color: #333;
+            }
+            input[type="text"], input[type="date"], input[type="number"], select, textarea {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                margin-top: 5px;
+            }
+            input[type="file"] {
+                border: none;
+            }
+            textarea {
+                resize: vertical;
+                height: 100px;
+            }
+            .form-actions {
+                text-align: center;
+                margin-top: 20px;
+            }
+            .btn {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin: 5px;
+            }
+            .btn-primary {
+                background-color: #007bff;
+                color: white;
+            }
+            .btn-secondary {
+                background-color: #6c757d;
+                color: white;
+            }
+        </style>
     </head>
     <body>
         <sql:setDataSource var="conn"
@@ -49,9 +125,8 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="tag">Tag</label>
-                        <select name="tag" required>
-                            <option value="">Select Tag</option>
+                        <label for="TypeID">Tag</label>
+                        <select name="TypeID">
                             <c:forEach var="row" items="${rsSchoolType.rows}">
                                 <option value="${row.TypeID}">${row.Type}</option>
                             </c:forEach>
@@ -66,10 +141,6 @@
                         <input type="file" id="Picture" name="Picture" required />
                     </div>
                     <div class="form-group">
-                        <label for="Website">Website</label>
-                        <input type="text" id="Website" name="Website" required />
-                    </div>
-                    <div class="form-group">
                         <label for="Description">Description</label>
                         <input type="text" id="Description" name="Description" placeholder="Enter Description" required />
                     </div>
@@ -77,8 +148,8 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="province">Province</label>
-                        <select id="provinceID" name="province" required>
-                            <option value="">Select Province</option>
+                        <select id="provinceID" name="province">
+                             <option value="">Chọn tỉnh/thành phố</option>
                             <c:forEach var="row" items="${rsProvince.rows}">
                                 <option value="${row.ProvinceID}">${row.ProvinceName}</option>
                             </c:forEach>
@@ -86,25 +157,30 @@
                     </div>
                     <div class="form-group">
                         <label for="district">District</label>
-                        <select id="DistrictID" name="district" required>
-                            <option value="">Select District</option>
+                        <select id="DistrictID" name="DistrictId">
+                            <option value="">Chọn quận/huyện</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="ward">Ward</label>
-                        <select id="WardID" name="ward" required>
-                            <option value="">Select Ward</option>
+                        <select id="WardID" name="WardId">
+                            <option value="">Chọn xã/phường</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Create</button>
-                    <button type="button" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary" name="btnCreate">Create</button>
+                    <button type="button" onclick="redirectToHome()" class="btn btn-secondary">Cancel</button>
                 </div>
             </form>
         </div>
+        <script type="text/javascript">
+            function redirectToHome() {
+                window.location.href = "/EduRate/Home"; // Replace "home.jsp" with the actual home page URL
+            }
+        </script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             $(document).ready(function () {

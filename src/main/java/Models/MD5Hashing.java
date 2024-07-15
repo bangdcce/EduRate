@@ -1,8 +1,10 @@
 package Models;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import static jdk.nashorn.tools.ShellFunctions.input;
 
 public class MD5Hashing {
 
@@ -16,10 +18,11 @@ public class MD5Hashing {
             md.update(password.getBytes());
             
             // Chuyển đổi message digest thành một biểu diễn thập lục phân
-            byte[] digest = md.digest();
+               byte[] digest = md.digest();
             
             // Chuyển đổi mảng byte thành biểu diễn thập lục phân
-            BigInteger no = new BigInteger(1, digest);
+                BigInteger no = new BigInteger(1, digest);
+
             
             // Convert biểu diễn thập lục phân thành một chuỗi hex
             String hashText = no.toString(16);

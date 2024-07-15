@@ -24,24 +24,25 @@ public class SignOutServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Hủy phiên làm việc
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-
-        // Get all cookies from the request
-        Cookie[] cookies = request.getCookies();
-        // Iterate through all cookies and set their max age to 0 to delete them
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-            }
-        }
         String path = request.getRequestURI();
         if (path.equals("/EduRate/SignOut")) {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+
+            // Get all cookies from the request
+            Cookie[] cookies = request.getCookies();
+            // Iterate through all cookies and set their max age to 0 to delete them
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
+
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
-        
+
     }
 }

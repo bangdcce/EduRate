@@ -15,8 +15,81 @@
 <html>
     <head>
         <title>Edit Schools</title>
-        <style>
-            /* Add your CSS styling here */
+       <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+            .container {
+                width: 80%;
+                max-width: 800px;
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+                color: #333;
+            }
+            .form-row {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            .form-group {
+                width: 48%;
+                margin-bottom: 15px;
+            }
+            .form-group.full-width {
+                width: 100%;
+            }
+            label {
+                display: block;
+                margin-bottom: 5px;
+                color: #333;
+            }
+            input[type="text"], input[type="date"], input[type="number"], select, textarea {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                box-sizing: border-box;
+                margin-top: 5px;
+            }
+            input[type="file"] {
+                border: none;
+            }
+            textarea {
+                resize: vertical;
+                height: 100px;
+            }
+            .form-actions {
+                text-align: center;
+                margin-top: 20px;
+            }
+            .btn {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin: 5px;
+            }
+            .btn-primary {
+                background-color: #007bff;
+                color: white;
+            }
+            .btn-secondary {
+                background-color: #6c757d;
+                color: white;
+            }
         </style>
     </head>
     <body>
@@ -68,16 +141,14 @@
                 request.setAttribute("TypeName", TypeName);
                 request.setAttribute("Description", Description);
                 request.setAttribute("Picture", picture);
-            } else{
-                    response.sendRedirect("/MainPage/Main");
-            }
+            } 
         %>
         <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
             <form action="EditServlet" method="post" enctype="multipart/form-data" >
                 <div class="form-row">
                     <div class="form-group">
                         <label for="SchoolID">School ID</label>
-                        <input type="text" id="SchoolID" name="SchoolID" value="${SchoolID}"/>
+                        <input type="text" id="SchoolID" name="SchoolID" value="${SchoolID}" readonly   />
                     </div>
                     <div class="form-group">
                         <label for="SchoolName">School Name</label>
@@ -93,14 +164,6 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label for="tag">Tag</label>
-                        <select name="tag">
-                            <c:forEach var="row" items="${rsSchoolType.rows}">
-                                <option value="${row.TypeID}" ${row.TypeID==SchoolTypeID ? 'selected': ' '}>${row.Type}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
                     <div class="form-group">
                         <label for="TotalStudents">Total Students</label>
                         <input type="number" id="TotalStudents" name="TotalStudents" value="${TotalStudents}"/>
@@ -127,7 +190,7 @@
                     </div>
                     <div class="form-group">
                         <label for="district">District</label>
-                        <select id="DistrictID" name="district">
+                        <select id="DistrictID" name="DistrictId">
                             <option value="${DistrictId}">${district}</option>
                         </select>
                     </div>
@@ -135,14 +198,14 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="ward">Ward</label>
-                        <select id="WardID" name="ward">
+                        <select id="WardID" name="WardId">
                             <option value="${WardId}">${WardName}</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    <button type="button" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary" name="btnUp" >Update</button>
+                    <button type="submit" class="btn-secondary" name="btnCancel">Cancel</button>
                 </div>
             </form>
         </div>

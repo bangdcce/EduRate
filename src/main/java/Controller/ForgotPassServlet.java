@@ -4,7 +4,9 @@
  */
 package Controller;
 
-import DAOs.SchoolDAO;
+import DAOs.UserDAO;
+import Models.Email;
+import Models.VerifyCode;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Bang
  */
-public class MainPage extends HttpServlet {
+public class ForgotPassServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +37,10 @@ public class MainPage extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MainPage</title>");
+            out.println("<title>Servlet ForgotPassServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet MainPage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ForgotPassServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,9 +58,9 @@ public class MainPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getRequestURI();
-        if (path.equals("/EduRate/Home") || path.equals("/EduRate")) {
-            request.getRequestDispatcher("/main.jsp").forward(request, response);
+        String path=request.getRequestURI();
+        if(path.equals("/ForgotPassServlet/Forgot")){
+            request.getRequestDispatcher("/ForgotPassword.jsp").forward(request, response);
         }
     }
 
@@ -73,15 +75,22 @@ public class MainPage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String schoolId = request.getParameter("schoolId");
-        String rating = request.getParameter("rating");
-
-        SchoolDAO schoolDao = new SchoolDAO();
-        boolean check = schoolDao.updateRatingInDatabase(schoolId, Integer.parseInt(rating));
-        if (check) {
-            response.sendRedirect("/EduRate/Home");
-        } else {
-            response.sendRedirect("/EduRate/Home");
+        if (request.getParameter("btnSearch") != null) {
+            int count =0;
+     
+            String userEmail = request.getParameter("email");
+            UserDAO userDAO = new UserDAO();
+            boolean findEmail = userDAO.checkExistEmail(userEmail);
+            if (findEmail) {
+                  String verifyCode=VerifyCode.generateVerificationCode();
+                  Email email=new Email();
+                  email.sendEmail(userEmail,verifyCode);
+                  UserDAO us=new UserDAO();
+                 count=us.updateVerificationCode(userEmail, verifyCode);
+                 if(count >0){
+                     response.sendRedirect("/VerifyServlet/VerifyEmail/"+userEmail);
+                 }
+            }
         }
     }
 

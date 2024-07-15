@@ -8,6 +8,8 @@ package Models;
  *
  * @author Acer
  */
+
+
 public class Statistic {
     private String schoolID;
     private String schoolName;
@@ -44,4 +46,3 @@ public class Statistic {
     }
     
 }
-

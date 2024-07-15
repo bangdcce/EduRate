@@ -105,7 +105,7 @@
             .form-group textarea,
             .form-group select {
                 width: 100%;
-                padding: 8px;
+padding: 8px;
                 border: 1px solid #ccc;
                 border-radius: 5px;
             }
@@ -144,30 +144,42 @@
 
             .custom-file-upload {
                 display: inline-block;
-                padding: 10px 20px;
+                padding: 6px 12px;
                 cursor: pointer;
+                background-color: #007bff;
                 color: #fff;
                 background-color: #28a745;
                 border-radius: 5px;
-                font-size: 16px;
+                font-size: 14px;
                 margin-right: 10px;
             }
 
-            .custom-file-upload:hover {
-                background-color: #28a745;
+            .custom-file-upload input[type="file"] {
+                display: none;
             }
 
-            input[type="file"] {
-                display: none;
+            .btn-upload {
+                display: inline-block;
+                padding: 6px 12px;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 13px;
+                cursor: pointer;
+            }
+
+            .btn-upload:hover {
+                background-color: #218838;
             }
         </style>
     </head>
     <body>
         <sql:setDataSource var="conn"
                            driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-                           url="jdbc:sqlserver://LAPTOP-FV3VVLHK\\MAY1:1433;databaseName=EduRate;encrypt=true;trustServerCertificate=true;"
+                           url="jdbc:sqlserver://ASUS3DK\\CHIBANG:1433;databaseName=EduReview;encrypt=true;trustServerCertificate=true;"
                            user="sa"
-                           password="Hoangphuc29"/>
+                           password="sa123"/>
         <sql:query dataSource="${conn}" var="rsTag">
             SELECT TagID, TagCategory FROM TagCategory
         </sql:query>
@@ -189,7 +201,7 @@
                 String lastName = rs.getString("LastName");
                 int TagId = rs.getInt("TagID");
                 String TagCate = rs.getString("TagCategory");
-                int genderId = rs.getInt("GenderID");
+int genderId = rs.getInt("GenderID");
                 String gender = rs.getString("Gender");
                 int ProvinceID = rs.getInt("ProvinceID");
                 String ProvinceName = rs.getString("ProvinceName");
@@ -200,7 +212,9 @@
                 Date birthDay = rs.getDate("BirthDay");
                 String email = rs.getString("EmailAddress");
                 String phone = rs.getString("PhoneNum");
+                String picture = rs.getString("Picture");
 
+                request.setAttribute("picture", picture);
                 request.setAttribute("firsName", firsName);
                 request.setAttribute("lastName", lastName);
                 request.setAttribute("TagId", TagId);
@@ -216,20 +230,22 @@
                 request.setAttribute("birthDay", birthDay);
                 request.setAttribute("email", email);
                 request.setAttribute("phone", phone);
+                request.setAttribute("fullName", lastName + " " + firsName);
             }
         %>
 
         <div class="container">
             <div class="sidebar">
                 <div class="profile">
-                    <img src="FPT.jpg" alt="Profile Picture"/>
-                    <form action="/upload" method="post" enctype="multipart/form-data">
+                    <img src="<%= request.getContextPath()%>/${picture}" alt="Profile Picture"/>
+                    <form action="UserServlet" method="post" enctype="multipart/form-data">
                         <label for="file-upload" class="custom-file-upload">
-                            <i class="fas fa-cloud-upload-alt"></i> Upload Photo
+                            <input id="file-upload" type="file" name="file"/>
+                            <button name="btnUpload" class="btn-upload fas fa-cloud-upload-alt">Upload Photo    </button>
                         </label>
-                        <input id="file-upload" type="file" name="file"/>
+                        <input type="hidden" name="userId" value="<%=userid%>">
                     </form>
-                    <h3>Phuc Nguyen</h3>
+                    <h3>${fullName}</h3>
                 </div>
                 <nav>
                     <ul class="nav flex-column nav-pills" role="tablist">
@@ -237,18 +253,15 @@
                             <a class="nav-link active" id="general-tab" data-toggle="pill" href="#general" role="tab"
                                aria-controls="general" aria-selected="true">General</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="password-tab" data-toggle="pill" href="#account-change-password" role="tab"
-                               aria-controls="account-change-password" aria-selected="false">Password</a>
-                        </li>
+
                     </ul>
                 </nav>
             </div>
-            <div class="content">
+<div class="content">
                 <h2>ACCOUNT INFORMATION</h2>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
-                        <form action="UserInfo" method="post" >
+                        <form action="UserServlet" method="post" >
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="firstName">First Name</label>
@@ -259,6 +272,7 @@
                                     <input type="text" id="lastName" name="lastName" value="${lastName}"/>
                                 </div>
                             </div>
+                            <input type="hidden" name="userId" value="<%= userid%>">
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="tag">Tag</label>
@@ -288,7 +302,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Phone number</label>
-                                    <input type="tel" id="phone" name="phone" value="${phone}"/>
+<input type="tel" id="phone" name="phone" value="${phone}"/>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -317,40 +331,12 @@
                                 </div>
                             </div>
                             <div class="form-actions">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                                <button type="button" class="btn btn-secondary">Cancel</button>
+                                <button type="submit" name="btnUpdate" class="btn btn-primary">Update</button>
+                                <button type="submit" name="btnCancel" class="btn btn-secondary">Cancel</button>
                             </div>
                         </form>
                     </div>
 
-                    <div class="tab-pane fade" id="account-change-password" role="tabpanel" aria-labelledby="password-tab">
-                        <form>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="currentPassword">Current password</label>
-                                    <input type="password" id="currentPassword" name="currentPassword"/>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="newPassword">New password</label>
-                                    <input type="password" id="newPassword" name="newPassword"/>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="confirmPassword">Repeat new password</label>
-                                    <input type="password" id="confirmPassword" name="confirmPassword"/>
-                                </div>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn btn-primary">
-                                    Change Password
-                                </button>
-                                <button type="button" class="btn btn-secondary">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
@@ -366,7 +352,7 @@
                 });
                 $('#DistrictID').change(function () {
                     var districtId = $(this).val();
-                    fillOptions('WardID', districtId);
+fillOptions('WardID', districtId);
                 });
             });
 
@@ -382,6 +368,36 @@
                         dd.append($('<option/>').text("Please select parent"));
                     }
                 });
+            }
+            function validateForm() {
+                var firstName = document.getElementById('firstName').value.trim();
+                var lastName = document.getElementById('lastName').value.trim();
+                var phoneNumber = document.getElementById('phone').value.trim();
+                var namePattern = /[A-Z][a-zA-Z]+/;
+                var phonePattern = /^$|(09|08|07|05|03)\d{8}$/;
+
+                if (!namePattern.test(firstName) || !namePattern.test(lastName)) {
+                    alert('Tên và họ chỉ được chứa chữ cái, và chữ cái đầu tiên phải viết hoa.');
+                    return false;
+                }
+
+                if (!phonePattern.test(phoneNumber)) {
+                    alert('Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại di động Việt Nam đúng định dạng.');
+                    return false;
+                }
+
+                var provinceID = document.getElementById('provinceID').value;
+                var districtID = document.getElementById('DistrictID').value;
+                var wardID = document.getElementById('WardID').value;
+
+                if (!provinceID || provinceID === "" || provinceID === "Chọn tỉnh/thành phố" ||
+                        !districtID || districtID === "" || districtID === "Chọn quận/huyện" ||
+                        !wardID || wardID === "" || wardID === "Chọn xã/phường") {
+                    alert('Vui lòng chọn đầy đủ Tỉnh/Thành phố, Quận/Huyện và Xã/Phường.');
+                    return false;
+                }
+
+                return true; // Submit the form if all validations pass
             }
         </script>
     </body>

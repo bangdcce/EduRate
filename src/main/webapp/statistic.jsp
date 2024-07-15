@@ -1,10 +1,3 @@
-<%-- 
-    Document   : statistic
-    Created on : Jul 12, 2024, 9:57:29 AM
-    Author     : Acer
---%>
-
-<%@page import="DAOs.UserDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Models.Statistic"%>
 <%@page import="java.sql.SQLException"%>
@@ -63,7 +56,7 @@
             /* =============== Navigation ================ */
             .navigation {
                 position: fixed;
-                width: 600px;
+                width: 300px;
                 height: 100%;
                 background: var(--blue);
                 border-left: 10px solid var(--blue);
@@ -96,7 +89,7 @@
 
             .navigation ul li:nth-child(1) {
                 margin-bottom: 40px;
-                pointer-events: none;
+pointer-events: none;
             }
 
             .navigation ul li a {
@@ -192,7 +185,7 @@
                 width: 60px;
                 height: 60px;
                 display: flex;
-                justify-content: center;
+justify-content: center;
                 align-items: center;
                 font-size: 2.5rem;
                 cursor: pointer;
@@ -302,16 +295,16 @@
 
         </style>
     </head>
-    <body> 
+    <body>
         <div class="container">
             <div class="navigation">
                 <ul>
-                    <li><a href=""><span class="icon"><ion-icon name="school"></ion-icon></span><span class="title">EDURATE</span></a></li>
-                    <li><a href="/EduRate/Home"><span class="icon"><ion-icon name="home-outline"></ion-icon></span><span class="title">Home Page</span></a></li>
-                    <li><a href="user.jsp"><span class="icon"><ion-icon name="person-outline"></ion-icon></span><span class="title">Profile</span></a></li>
-                    <li><a href="/EduRate/Statistic"><span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span><span class="title">Statistics</span></a></li>
+<li><a href="index.jsp"><span class="icon"><ion-icon name="school"></ion-icon></span><span class="title">EDURATE</span></a></li>
+                    <li><a href="index.jsp"><span class="icon"><ion-icon name="home-outline"></ion-icon></span><span class="title">Home Page</span></a></li>
+                    <li><a href="profile.jsp"><span class="icon"><ion-icon name="person-outline"></ion-icon></span><span class="title">Profile</span></a></li>
+                    <li><a href="statistic.jsp"><span class="icon"><ion-icon name="stats-chart-outline"></ion-icon></span><span class="title">Statistics</span></a></li>
                     <li><a href="login.jsp"><span class="icon"><ion-icon name="log-in-outline"></ion-icon></span><span class="title">Log In</span></a></li>
-                    <li><a href="/EduRate/SignOut"><span class="icon"><ion-icon name="log-out-outline"></ion-icon></span><span class="title">Sign Out</span></a></li>
+                    <li><a href="#"><span class="icon"><ion-icon name="log-out-outline"></ion-icon></span><span class="title">Sign Out</span></a></li>
                 </ul>
             </div>
         </div>
@@ -362,7 +355,7 @@
             <canvas id="university-chart" width="400" height="200"></canvas>
         </div>
         <script>
-            let list = document.querySelectorAll(".navigation li");
+let list = document.querySelectorAll(".navigation li");
             function activeLink() {
                 list.forEach((item) => item.classList.remove("hovered"));
                 this.classList.add("hovered");
@@ -382,7 +375,7 @@
             document.addEventListener("DOMContentLoaded", () => {
                 const ctx = document.getElementById("university-chart").getContext("2d");
 
-                // Chuyển dữ liệu từ JSP sang JavaScript
+                // Chuyá»n dá»¯ liá»u tá»« JSP sang JavaScript
                 const schoolNames = <%= new com.google.gson.Gson().toJson(schoolNames) %>;
                 const reviewScores = <%= new com.google.gson.Gson().toJson(reviewScores) %>;
 

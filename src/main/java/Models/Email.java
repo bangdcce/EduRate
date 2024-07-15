@@ -13,12 +13,11 @@ import javax.mail.internet.MimeMessage;
 
 public class Email {
 
-    public void sendEmail() {
+    public void sendEmail(String to,String verifiCode) {
         //passSendGrid=pfX42qFC3uRj7D-A
         //recovery code:KW12B77TWXXV1GQ5BQMXVXEU
         final String from = "rateedu10@gmail.com";
         final String pass = "tbfisqjhozbiqltr";
-        final String to = "annpce181888@fpt.edu.vn";
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -44,7 +43,7 @@ public class Email {
             msg.setSubject("Test email");
             
             msg.setSentDate(new java.util.Date());
-            msg.setText("This is content"+generateVerificationCode(),"UTF-8");
+            msg.setText("This is content "+verifiCode,"UTF-8");
             
             
              Transport.send(msg);
